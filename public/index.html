@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Kahoot Botter Educativov2</title>
+    <title>Kahoot Botter</title>
     <style>
       body { font-family: sans-serif; max-width: 400px; margin: auto; padding-top: 50px; }
       input, button { width: 100%; padding: 10px; margin: 5px 0; }
@@ -11,7 +11,7 @@
     </style>
   </head>
   <body>
-    <h2>Kahoot Botter Educativo</h2>
+    <h2>Kahoot Botter no educativo xD</h2>
     <form id="botForm">
       <input type="text" id="pin" placeholder="PIN del juego" required />
       <input type="number" id="amount" placeholder="Cantidad de bots" value="10" required />
@@ -34,19 +34,16 @@
             body: JSON.stringify({ pin, amount })
           });
 
-          // Asegurarse de que la respuesta es JSON
           const data = await res.json();
 
           if (data.success) {
             document.getElementById("status").innerText = `${data.count} bots enviados.`;
             document.getElementById("status").className = "success";
           } else {
-            // En caso de error, mostrar los errores
             document.getElementById("status").innerText = `Error: ${data.errors.join(", ")}`;
             document.getElementById("status").className = "error";
           }
         } catch (err) {
-          // Si hubo un error en la solicitud
           document.getElementById("status").innerText = `Error al procesar la solicitud: ${err.message}`;
           document.getElementById("status").className = "error";
         }
