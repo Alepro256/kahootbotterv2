@@ -1,0 +1,7 @@
+{
+  "name": "kahoot-botter-vercel",
+  "version": "1.0.0",
+  "dependencies": {
+    "kahoot.js-updated": "^1.0.5"
+  }
+}
