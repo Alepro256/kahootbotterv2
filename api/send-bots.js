@@ -1,13 +1,17 @@
 import Kahoot from "kahoot.js-updated";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).end("Method not allowed");
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
   const { pin, amount } = req.body;
   const N_BOTS = parseInt(amount) || 10;
   const NAME_PREFIX = "Bot_";
 
-  if (!pin) return res.status(400).json({ error: "Missing Kahoot PIN" });
+  if (!pin) {
+    return res.status(400).json({ error: "Missing Kahoot PIN" });
+  }
 
   let errors = [];
   console.log(`Iniciando bots para el PIN: ${pin}, Cantidad: ${N_BOTS}`);
@@ -24,9 +28,10 @@ export default async function handler(req, res) {
     }
   }
 
+  // Si hubo errores, devolverlos en formato JSON
   if (errors.length > 0) {
     return res.status(500).json({ success: false, errors });
   }
 
-  res.status(200).json({ success: true, count: N_BOTS });
+  return res.status(200).json({ success: true, count: N_BOTS });
 }
