@@ -5,6 +5,9 @@
     <style>
       body { font-family: sans-serif; max-width: 400px; margin: auto; padding-top: 50px; }
       input, button { width: 100%; padding: 10px; margin: 5px 0; }
+      #status { padding: 10px; margin-top: 20px; }
+      .error { color: red; }
+      .success { color: green; }
     </style>
   </head>
   <body>
@@ -22,15 +25,28 @@
         const pin = document.getElementById("pin").value;
         const amount = document.getElementById("amount").value;
         document.getElementById("status").innerText = "Enviando...";
-        const res = await fetch("/api/send-bots", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pin, amount })
-        });
-        const data = await res.json();
-        document.getElementById("status").innerText = data.success
-          ? `✅ ${data.count} bots enviados.`
-          : `❌ Error: ${data.error}`;
+        document.getElementById("status").className = "";
+
+        try {
+          const res = await fetch("/api/send-bots", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ pin, amount })
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            document.getElementById("status").innerText = `${data.count} bots enviados.`;
+            document.getElementById("status").className = "success";
+          } else {
+            document.getElementById("status").innerText = `Error: ${data.errors.join(", ")}`;
+            document.getElementById("status").className = "error";
+          }
+        } catch (err) {
+          document.getElementById("status").innerText = `Error al procesar la solicitud: ${err.message}`;
+          document.getElementById("status").className = "error";
+        }
       });
     </script>
   </body>
